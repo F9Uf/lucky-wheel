@@ -1,6 +1,12 @@
 <template>
   <div class="w-[500px] h-[500px] bg-neutral-700 rounded-full relative">
-    <div :class="`w-[470px] h-[470px] bg-neutral-600 rounded-full ${positionCenterStyle} overflow-hidden`">
+    <div
+      :class="`w-[470px] h-[470px] bg-neutral-600 absolute top-1/2 left-1/2 rounded-full overflow-hidden easing-ease`"
+      :style="{
+        transform: `translate(-50%,-50%) rotate(${startDegree}deg)`,
+        transitionDuration: `${duration}s`
+      }"
+    >
       <div
         v-for="(item, index) in items"
         :key="index"
@@ -27,31 +33,43 @@
         </div>
       </div>
     </div>
-    <div :class="`bg-neutral-100 w-8 h-8 rounded-full ${positionCenterStyle}`">
-      <div :class="`bg-neutral-700 w-2 h-2 rounded-full ${positionCenterStyle}`"></div>
-    </div>
     <Pin />
+    <Spin
+      :is-spinning="isSpinning"
+      @spin="handleSpinClick"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
+import { computed, defineComponent, PropType, ref } from 'vue'
 
-import Pin from './Pin.vue';
+import Pin from './Pin.vue'
+import Spin from './Spin.vue'
+
+import { delayInSecond } from '../../utils/time';
 
 export default defineComponent({
   props: {
     items: {
       type: Array as PropType<string[]>,
       default: () => [],
+    },
+    duration: {
+      type: Number,
+      default: 5,
     }
   },
   components: {
-    Pin
+    Pin,
+    Spin
   },
   setup(props) {
-    const positionCenterStyle = computed((): string => "absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2")
+    const positionCenterStyle = computed((): string => 'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2')
     const degreePerItem = computed((): number => 360 / props.items.length)
+    const currentItemIndex = ref<number>(0);
+    const isSpinning = ref<boolean>(false);
+    const startDegree = ref<number>(-1 * currentItemIndex.value * degreePerItem.value - degreePerItem.value / 2)
 
     const calculateItemBg = (index: number): string => {
       const bgColors = [
@@ -63,11 +81,35 @@ export default defineComponent({
       return bgColors[bgIndex]
     }
 
+    const handleSpinClick = async () => {
+      if (isSpinning.value) return
+
+      isSpinning.value = true
+
+      const previousCurrentItemIndex = currentItemIndex.value
+      currentItemIndex.value = Math.floor(Math.random() * props.items.length + 1)
+      startDegree.value += 360 * 2 - ((currentItemIndex.value - previousCurrentItemIndex) * degreePerItem.value)
+
+      await delayInSecond(props.duration)
+
+      isSpinning.value = false
+    }
+
     return {
       positionCenterStyle,
       degreePerItem,
+      startDegree,
+      isSpinning,
+      currentItemIndex,
       calculateItemBg,
+      handleSpinClick,
     }
   }
 })
 </script>
+
+<style scoped>
+.easing-ease {
+  transition: transform cubic-bezier(0.65, 0, 0.35, 1);
+}
+</style>
