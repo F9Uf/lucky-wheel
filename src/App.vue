@@ -1,11 +1,17 @@
 <template>
+  <div
+    class="text-white text-center my-6 text-5xl"
+  >
+    <span class=" text-violet-400 p-0 m-0">L</span>ucky <span class=" text-violet-400 p-0 m-0">W</span>heel
+    <span class=" text-violet-200 p-0 m-0">!</span>
+  </div>
   <div class="text-white flex flex-col items-center">
     <Wheel
       class="my-7"
       :items="items"
       @spinned="handleSpinned"
     />
-    <div class="grid grid-cols-3 gap-4 gap-y-8 w-full px-16 mt-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 gap-y-8 w-full px-16 mt-16">
       <div
         v-for="(item, index) in items"
         :key="index"
