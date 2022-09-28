@@ -3,6 +3,7 @@
     <Wheel
       class="my-7"
       :items="items"
+      @spinned="handleSpinned"
     />
     <div class="grid grid-cols-3 gap-4 gap-y-8 w-full px-16 mt-16">
       <div
@@ -52,11 +53,16 @@ export default defineComponent({
       items.value.splice(index, 1)
     }
 
+    const handleSpinned = (randomIndex: number) => {
+      console.log(randomIndex);
+    }
+
     return {
       items,
       shouldDisableCloseButton,
       addItem,
       removeItem,
+      handleSpinned,
     }
   },
 })

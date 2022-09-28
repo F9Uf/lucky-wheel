@@ -4,7 +4,7 @@
       :class="`w-[470px] h-[470px] bg-neutral-600 absolute top-1/2 left-1/2 rounded-full overflow-hidden easing-ease`"
       :style="{
         transform: `translate(-50%,-50%) rotate(${startDegree}deg)`,
-        transitionDuration: `${duration}s`
+        transitionDuration: `${transitionDuration}s`
       }"
     >
       <div
@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, ref } from 'vue'
+import { computed, defineComponent, PropType, ref, watch } from 'vue'
 
 import Pin from './Pin.vue'
 import Spin from './Spin.vue'
@@ -50,6 +50,9 @@ import Spin from './Spin.vue'
 import { delayInSecond } from '../../utils/time';
 
 export default defineComponent({
+  emits: {
+    'spinned': (_: number) => true
+  },
   props: {
     items: {
       type: Array as PropType<string[]>,
@@ -64,12 +67,13 @@ export default defineComponent({
     Pin,
     Spin
   },
-  setup(props) {
+  setup(props, context) {
     const positionCenterStyle = computed((): string => 'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2')
     const degreePerItem = computed((): number => 360 / props.items.length)
     const currentItemIndex = ref<number>(0);
     const isSpinning = ref<boolean>(false);
     const startDegree = ref<number>(-1 * currentItemIndex.value * degreePerItem.value - degreePerItem.value / 2)
+    const transitionDuration = ref<number>(props.duration)
 
     const calculateItemBg = (index: number): string => {
       const bgColors = [
@@ -86,14 +90,22 @@ export default defineComponent({
 
       isSpinning.value = true
 
+      transitionDuration.value = props.duration
+
       const previousCurrentItemIndex = currentItemIndex.value
       currentItemIndex.value = Math.floor(Math.random() * props.items.length + 1)
-      startDegree.value += 360 * 2 - ((currentItemIndex.value - previousCurrentItemIndex) * degreePerItem.value)
+      startDegree.value += 360 * 3 - ((currentItemIndex.value - previousCurrentItemIndex) * degreePerItem.value)
 
       await delayInSecond(props.duration)
 
       isSpinning.value = false
+      context.emit('spinned', currentItemIndex.value)
     }
+
+    watch(props.items, (items, prevItems) => {
+      transitionDuration.value = 0
+      startDegree.value = -1 * currentItemIndex.value * degreePerItem.value - degreePerItem.value / 2
+    })
 
     return {
       positionCenterStyle,
@@ -101,6 +113,7 @@ export default defineComponent({
       startDegree,
       isSpinning,
       currentItemIndex,
+      transitionDuration,
       calculateItemBg,
       handleSpinClick,
     }
