@@ -3,7 +3,7 @@
     type="text"
     class="text-gray-200 py-2 px-4 rounded-sm border-solid border-neutral-200 outline-none bg-neutral-600 w-full"
     :value="modelValue"
-    @input="$emit('update:modelValue', $event.target?.value)"
+    @input="onInputChange($event)"
   />
 </template>
 
@@ -16,6 +16,15 @@ export default defineComponent({
     modelValue: {
       type: String,
       required: true
+    }
+  },
+  setup(_, context) {
+    const onInputChange = (event: Event) => {
+      context.emit('update:modelValue', (event.target as HTMLInputElement).value)
+    }
+
+    return {
+      onInputChange
     }
   }
 })
