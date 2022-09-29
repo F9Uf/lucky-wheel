@@ -2,7 +2,7 @@
   <div
     class="text-white text-center my-6 text-5xl"
   >
-    <span class=" text-violet-400 p-0 m-0">L</span>ucky <span class=" text-violet-400 p-0 m-0">W</span>heel
+    <span class=" text-violet-400 p-0 m-0">L</span>ucky <span class=" text-violet-400 p-0 m-0">W</span>heel 2
     <span class=" text-violet-200 p-0 m-0">!</span>
   </div>
   <div class="text-white flex flex-col items-center">
@@ -120,3 +120,8 @@ export default defineComponent({
 })
 </script>
 
+<style>
+body {
+  background-color: rgb(38 38 38 / 1);
+}
+</style>
