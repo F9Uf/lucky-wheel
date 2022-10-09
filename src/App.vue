@@ -70,7 +70,7 @@ export default defineComponent({
     Modal,
   },
   setup() {
-    const items = ref<string[]>(['name1', 'name2', 'name3', ''])
+    const items = ref<string[]>(['name1', 'name2', 'name3', 'name4'])
     const shouldDisableCloseButton = computed((): boolean => items.value.length <= 4)
     const showModal = ref<boolean>(false);
     const winnerIndex = ref<number>(0);
@@ -86,8 +86,10 @@ export default defineComponent({
     }
 
     const handleSpinned = (randomIndex: number) => {
-      winner.value = items.value[randomIndex]
-      winnerIndex.value = randomIndex
+      const itemsLength = items.value.length; // Total items
+      const isFirstItem = randomIndex === itemsLength; // If randomIndex === itemsLength then the winning item is the first one in the items array
+      winner.value = isFirstItem ? items.value[0] : items.value[randomIndex];
+      winnerIndex.value = isFirstItem ? 0 : randomIndex;
       showModal.value = true
     }
 
