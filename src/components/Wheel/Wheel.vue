@@ -7,31 +7,51 @@
         transitionDuration: `${transitionDuration}s`
       }"
     >
-      <div
-        v-for="(item, index) in items"
-        :key="index"
-        :class="`
-          overflow-hidden absolute w-[50%] h-[50%]
-          top-0 right-0
-          ${calculateItemBg(index)}
-        `"
-        :style="{
-          transform: `
-            rotate(${degreePerItem * index}deg)
-            skewY(${-(90 - degreePerItem)}deg)
-          `,
-          transformOrigin: '0% 100%'
-        }"
-      >
+      <template v-if="items.length > 3">
         <div
-          class="absolute -left-full w-[200%] h-[200%] text-center pt-5"
+          v-for="(item, index) in items"
+          :key="index"
+          :class="`
+            overflow-hidden absolute w-[50%] h-[50%]
+            top-0 right-0
+            ${calculateItemBg(index)}
+          `"
           :style="{
-            transform: `skewY(${90 - degreePerItem}deg) rotate(${degreePerItem / 2}deg)`
+            transform: `
+              rotate(${degreePerItem * index}deg)
+              skewY(${-(90 - degreePerItem)}deg)
+            `,
+            transformOrigin: '0% 100%'
           }"
         >
-          <span>{{ item }}</span>
+          <div
+            class="absolute -left-full w-[200%] h-[200%] text-center pt-5"
+            :style="{
+              transform: `skewY(${90 - degreePerItem}deg) rotate(${degreePerItem / 2}deg)`
+            }"
+          >
+            <span>{{ item }}</span>
+          </div>
         </div>
-      </div>
+      </template>
+      <template v-else>
+        <div
+          v-for="(item, index) in items"
+          :key="index"
+          :class="`
+            item
+            overflow-hidden absolute h-1/2 ${calculateItemBg(index)}
+            top-0 left-1/2 text-center pt-10
+          `"
+
+          :style="{
+            transform: `translateX(-50%) rotate(${degreePerItem * index}deg)`,
+            transformOrigin: '50% 100%',
+          }"
+        >
+          {{ item }}
+        </div>
+      </template>
     </div>
     <Pin />
     <Spin
@@ -72,7 +92,8 @@ export default defineComponent({
     const degreePerItem = computed((): number => 360 / props.items.length)
     const currentItemIndex = ref<number>(0);
     const isSpinning = ref<boolean>(false);
-    const startDegree = ref<number>(-1 * currentItemIndex.value * degreePerItem.value - degreePerItem.value / 2)
+    const divider = ref<number>(props.items.length > 3 ? 2 : 100);
+    const startDegree = ref<number>(-1 * currentItemIndex.value * degreePerItem.value - degreePerItem.value / divider.value)
     const transitionDuration = ref<number>(props.duration)
 
     const calculateItemBg = (index: number): string => {
@@ -124,5 +145,10 @@ export default defineComponent({
 <style scoped>
 .easing-ease {
   transition: transform cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.item {
+  width: 175%;
+  clip-path: polygon(100% 0, 0 0, 50% 100%);
 }
 </style>
