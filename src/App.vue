@@ -61,6 +61,8 @@ import Close from './components/Close.vue';
 import Button from './components/Button.vue';
 import Modal from './components/Modal.vue';
 
+const MINIMUM_ITEM = 1
+
 export default defineComponent({
   components: {
     Wheel,
@@ -70,8 +72,8 @@ export default defineComponent({
     Modal,
   },
   setup() {
-    const items = ref<string[]>(['name1', 'name2', 'name3', 'name4'])
-    const shouldDisableCloseButton = computed((): boolean => items.value.length <= 4)
+    const items = ref<string[]>(['name1', 'name2', 'name3'])
+    const shouldDisableCloseButton = computed((): boolean => items.value.length <= MINIMUM_ITEM)
     const showModal = ref<boolean>(false);
     const winnerIndex = ref<number>(0);
     const winner = ref<string>('');
@@ -81,7 +83,7 @@ export default defineComponent({
     }
 
     const removeItem = (index: number) => {
-      if (items.value.length <= 4) return
+      if (items.value.length <= MINIMUM_ITEM) return
       items.value.splice(index, 1)
     }
 
