@@ -40,7 +40,9 @@
           :key="index"
           :class="`
             item
-            overflow-hidden absolute h-1/2 ${calculateItemBg(index)}
+            ${items.length === 3 ? 'clip-60deg' : ''}
+            ${items.length === 1 ? 'h-full': 'h-1/2'}
+            overflow-hidden absolute ${calculateItemBg(index)}
             top-0 left-1/2 text-center pt-10
           `"
 
@@ -92,7 +94,17 @@ export default defineComponent({
     const degreePerItem = computed((): number => 360 / props.items.length)
     const currentItemIndex = ref<number>(0);
     const isSpinning = ref<boolean>(false);
-    const divider = ref<number>(props.items.length > 3 ? 2 : 100);
+    const divider = computed((): number => {
+      switch (props.items.length) {
+        case 1:
+        case 2:
+          return 0.5
+        case 3:
+          return 1/3
+        default:
+          return 2
+      }
+    });
     const startDegree = ref<number>(-1 * currentItemIndex.value * degreePerItem.value - degreePerItem.value / divider.value)
     const transitionDuration = ref<number>(props.duration)
 
@@ -125,7 +137,7 @@ export default defineComponent({
 
     watch(props.items, (items, prevItems) => {
       transitionDuration.value = 0
-      startDegree.value = -1 * currentItemIndex.value * degreePerItem.value - degreePerItem.value / 2
+      startDegree.value = -1 * currentItemIndex.value * degreePerItem.value - degreePerItem.value / divider.value
     })
 
     return {
@@ -149,6 +161,9 @@ export default defineComponent({
 
 .item {
   width: 175%;
+}
+
+.item.clip-60deg {
   clip-path: polygon(100% 0, 0 0, 50% 100%);
 }
 </style>
