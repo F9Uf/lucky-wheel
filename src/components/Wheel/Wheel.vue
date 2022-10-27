@@ -1,7 +1,16 @@
 <template>
-  <div class="w-[500px] h-[500px] bg-neutral-700 rounded-full relative">
+  <div
+    class="
+      w-[250px] h-[250px] md:w-[350px] md:h-[350px] lg:w-[500px] lg:h-[500px]
+      text-xs md:text-sm lg:text-base
+      bg-neutral-700 rounded-full relative
+    "
+  >
     <div
-      :class="`w-[470px] h-[470px] bg-neutral-600 absolute top-1/2 left-1/2 rounded-full overflow-hidden easing-ease`"
+      :class="`
+        w-[230px] h-[230px] md:w-[320px] md:h-[320px] lg:w-[470px] lg:h-[470px]
+        bg-neutral-600 absolute top-1/2 left-1/2 rounded-full overflow-hidden easing-ease
+      `"
       :style="{
         transform: `translate(-50%,-50%) rotate(${startDegree}deg)`,
         transitionDuration: `${transitionDuration}s`
