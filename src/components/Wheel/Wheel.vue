@@ -2,6 +2,7 @@
   <div
     class="
       w-[250px] h-[250px] md:w-[350px] md:h-[350px] lg:w-[500px] lg:h-[500px]
+      text-xs md:text-sm lg:text-base
       bg-neutral-700 rounded-full relative
     "
   >
