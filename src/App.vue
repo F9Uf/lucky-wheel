@@ -11,7 +11,10 @@
       :items="items"
       @spinned="handleSpinned"
     />
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 gap-y-8 w-full px-16 mt-16">
+    <div class="
+      grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 gap-y-8 w-full
+      px-4 md:px-10 lg:px-16 mt-16
+    ">
       <div
         v-for="(item, index) in items"
         :key="index"
