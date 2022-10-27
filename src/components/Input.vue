@@ -3,6 +3,7 @@
     type="text"
     class="
       py-0 px-2 h-8 md:py-2 md:px-4 md:h-10
+      text-sm md:text-base
       text-gray-200 rounded-sm border-solid border-neutral-200 outline-none bg-neutral-600 w-full
     "
     :value="modelValue"
