@@ -5,7 +5,7 @@
     <span class=" text-violet-400 p-0 m-0">L</span>ucky <span class=" text-violet-400 p-0 m-0">W</span>heel
     <span class=" text-violet-200 p-0 m-0">!</span>
   </div>
-  <div class="text-white flex flex-col items-center">
+  <div class="text-white flex flex-col items-center my-6 overflow-x-hidden">
     <Wheel
       class="my-7"
       :items="items"
