@@ -5,7 +5,7 @@
     <span class=" text-violet-400 p-0 m-0">L</span>ucky <span class=" text-violet-400 p-0 m-0">W</span>heel
     <span class=" text-violet-200 p-0 m-0">!</span>
   </div>
-  <div class="text-white flex flex-col items-center my-6 overflow-x-hidden">
+  <div class="text-white flex flex-col items-center my-6">
     <Wheel
       class="my-7"
       :items="items"
@@ -45,7 +45,7 @@
     <div class="mt-12">
       <Button
         v-if="!shouldDisableCloseButton"
-        class="mr-4"
+        class="mr-0 mb-3 xl:mb-0 lg:mr-4"
         @click="handleRemoveItemOnModal"
       >
         Remove this item
