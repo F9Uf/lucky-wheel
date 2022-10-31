@@ -45,7 +45,7 @@
     <div class="mt-12">
       <Button
         v-if="!shouldDisableCloseButton"
-        class="mr-4"
+        class="mr-0 mb-3 xl:mb-0 lg:mr-4"
         @click="handleRemoveItemOnModal"
       >
         Remove this item
